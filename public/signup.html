@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Account — Student Helping AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #08090d; --bg2: #0f1118; --bg3: #161922;
+      --surface: rgba(255,255,255,0.04); --surface2: rgba(255,255,255,0.07);
+      --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.14);
+      --text: #eef0f8; --text2: #8b90a8; --text3: #555a72;
+      --accent: #e91e8c; --accent2: #ff6eb4; --accent3: #f0a500;
+      --error: #f87171; --success: #4ade80; --warn: #fbbf24;
+      --grad: linear-gradient(135deg, #e91e8c 0%, #ff6eb4 50%, #f0a500 100%);
+      --grad2: linear-gradient(135deg, #e91e8c22 0%, #ff6eb422 100%);
+      --shadow: 0 24px 64px rgba(0,0,0,0.5);
+      --radius: 18px; --transition: all 0.28s cubic-bezier(0.4,0,0.2,1);
+      --font-display: 'Syne', sans-serif; --font-body: 'DM Sans', sans-serif;
+    }
+    [data-theme="light"] {
+      --bg: #f4f5fb; --bg2: #ffffff; --bg3: #eceef8;
+      --surface: rgba(233,30,140,0.04); --surface2: rgba(233,30,140,0.08);
+      --border: rgba(233,30,140,0.12); --border2: rgba(233,30,140,0.22);
+      --text: #16172b; --text2: #5a5e7a; --text3: #9499b8;
+      --shadow: 0 24px 64px rgba(233,30,140,0.12);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body); background: var(--bg); color: var(--text);
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      padding: 80px 24px 40px; transition: background 0.3s, color 0.3s;
+      position: relative; overflow-x: hidden;
+    }
+    body::before {
+      content: ''; position: fixed; top: -20%; right: -10%;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(233,30,140,0.12) 0%, transparent 60%);
+      pointer-events: none; z-index: 0;
+    }
+    body::after {
+      content: ''; position: fixed; bottom: -20%; left: -10%;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(56,189,248,0.08) 0%, transparent 60%);
+      pointer-events: none; z-index: 0;
+    }
+    .top-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 40px;
+    }
+    .nav-logo {
+      font-family: var(--font-display); font-weight: 800; font-size: 18px;
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--text);
+    }
+    .logo-icon {
+      width: 32px; height: 32px; border-radius: 9px;
+      background: var(--grad); display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+    }
+    .theme-btn {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--surface2); border: 1px solid var(--border2);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: 16px; transition: var(--transition);
+    }
+
+    .auth-card {
+      background: var(--bg2); border: 1px solid var(--border2);
+      border-radius: 24px; padding: 44px 44px;
+      width: 100%; max-width: 480px; box-shadow: var(--shadow);
+      position: relative; z-index: 1;
+      animation: cardIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(40px) scale(0.96); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .card-header { text-align: center; margin-bottom: 32px; }
+    .card-icon {
+      width: 64px; height: 64px; border-radius: 18px; background: var(--grad);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; margin: 0 auto 20px;
+      box-shadow: 0 8px 32px rgba(233,30,140,0.3);
+    }
+    .card-header h1 {
+      font-family: var(--font-display); font-weight: 800; font-size: 26px;
+      letter-spacing: -0.02em; margin-bottom: 8px;
+    }
+    .card-header p { color: var(--text2); font-size: 15px; }
+
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 18px; position: relative; }
+    .form-label {
+      display: block; font-size: 13px; font-weight: 600;
+      color: var(--text2); margin-bottom: 7px;
+    }
+    .input-icon-wrap { position: relative; }
+    .form-input {
+      width: 100%; padding: 13px 16px;
+      background: var(--surface); border: 1.5px solid var(--border2);
+      border-radius: 11px; color: var(--text);
+      font-family: var(--font-body); font-size: 15px; outline: none;
+      transition: var(--transition);
+    }
+    .form-input::placeholder { color: var(--text3); }
+    .form-input:focus {
+      border-color: var(--accent); background: var(--surface2);
+      box-shadow: 0 0 0 4px rgba(233,30,140,0.12);
+    }
+    .form-input.has-icon { padding-right: 48px; }
+    .form-input.error { border-color: var(--error); }
+    .form-input.success { border-color: var(--success); }
+    .input-icon {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      cursor: pointer; color: var(--text3); font-size: 15px;
+      transition: color 0.2s; user-select: none;
+    }
+    .input-icon:hover { color: var(--text2); }
+    .error-msg { font-size: 12px; color: var(--error); margin-top: 5px; display: none; }
+    .error-msg.show { display: block; }
+
+    /* Password strength */
+    .strength-bar { display: flex; gap: 4px; margin-top: 8px; }
+    .strength-seg {
+      flex: 1; height: 3px; border-radius: 2px;
+      background: var(--border2); transition: background 0.3s;
+    }
+    .strength-seg.weak { background: var(--error); }
+    .strength-seg.fair { background: var(--warn); }
+    .strength-seg.good { background: var(--success); }
+    .strength-label { font-size: 11px; color: var(--text3); margin-top: 5px; }
+
+    /* Terms */
+    .terms-row { margin-bottom: 24px; }
+    .checkbox-label {
+      display: flex; align-items: flex-start; gap: 10px;
+      cursor: pointer; font-size: 13px; color: var(--text2); line-height: 1.5;
+    }
+    .checkbox-label input { display: none; }
+    .custom-checkbox {
+      width: 18px; height: 18px; border-radius: 5px; flex-shrink: 0;
+      border: 1.5px solid var(--border2); background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      transition: var(--transition); margin-top: 1px;
+    }
+    .checkbox-label input:checked + .custom-checkbox {
+      background: var(--accent); border-color: var(--accent);
+    }
+    .checkbox-label input:checked + .custom-checkbox::after {
+      content: '✓'; color: white; font-size: 11px; font-weight: 700;
+    }
+    .terms-row a { color: var(--accent2); }
+
+    .btn-submit {
+      width: 100%; padding: 15px;
+      background: var(--grad); border: none; border-radius: 12px;
+      color: white; font-family: var(--font-display); font-weight: 700; font-size: 16px;
+      cursor: pointer; transition: var(--transition);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(233,30,140,0.4); }
+    .btn-submit.loading { pointer-events: none; }
+    .spinner {
+      width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white; border-radius: 50%;
+      animation: spin 0.8s linear infinite; display: none;
+    }
+    .btn-submit.loading .spinner { display: block; }
+    .btn-submit.loading .btn-text { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .card-footer { text-align: center; margin-top: 22px; font-size: 14px; color: var(--text2); }
+    .card-footer a { color: var(--accent2); font-weight: 600; }
+
+    /* Success state */
+    .success-overlay {
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 20px;
+    }
+    .success-overlay.show { display: flex; }
+    .success-check {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: rgba(74,222,128,0.15);
+      border: 2px solid var(--success);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px; margin: 0 auto 20px;
+      animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    @keyframes popIn {
+      from { transform: scale(0); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+
+    @media (max-width: 500px) {
+      .auth-card { padding: 28px 20px; }
+      .form-row-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">✦</div>
+      Student AI
+    </a>
+    <button class="theme-btn" id="themeToggle">🌙</button>
+  </div>
+
+  <div class="auth-card">
+    <div id="formView">
+      <div class="card-header">
+        <div class="card-icon">🎓</div>
+        <h1>Create your account</h1>
+        <p>Start your learning journey today — it's free</p>
+      </div>
+
+      <form id="signupForm" novalidate>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label" for="firstName">First Name</label>
+            <input type="text" id="firstName" class="form-input" placeholder="Alex"/>
+            <div class="error-msg" id="firstNameError">Required field.</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="lastName">Last Name</label>
+            <input type="text" id="lastName" class="form-input" placeholder="Smith"/>
+            <div class="error-msg" id="lastNameError">Required field.</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <input type="email" id="email" class="form-input" placeholder="you@example.com"/>
+          <div class="error-msg" id="emailError">Please enter a valid email address.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <div class="input-icon-wrap">
+            <input type="password" id="password" class="form-input has-icon" placeholder="Create a strong password"/>
+            <span class="input-icon" id="pwToggle">👁️</span>
+          </div>
+          <div class="strength-bar">
+            <div class="strength-seg" id="s1"></div>
+            <div class="strength-seg" id="s2"></div>
+            <div class="strength-seg" id="s3"></div>
+            <div class="strength-seg" id="s4"></div>
+          </div>
+          <div class="strength-label" id="strengthLabel">Enter a password</div>
+          <div class="error-msg" id="passwordError">Password must be at least 6 characters.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="confirmPassword">Confirm Password</label>
+          <div class="input-icon-wrap">
+            <input type="password" id="confirmPassword" class="form-input has-icon" placeholder="Repeat your password"/>
+            <span class="input-icon" id="cpwToggle">👁️</span>
+          </div>
+          <div class="error-msg" id="confirmError">Passwords do not match.</div>
+        </div>
+
+        <div class="terms-row">
+          <label class="checkbox-label">
+            <input type="checkbox" id="terms"/>
+            <span class="custom-checkbox"></span>
+            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+          </label>
+          <div class="error-msg" id="termsError" style="margin-top:6px;">You must accept the terms to continue.</div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">
+          <span class="btn-text">Create Account →</span>
+          <div class="spinner"></div>
+        </button>
+      </form>
+
+      <div class="card-footer">
+        Already have an account? <a href="login.html">Sign in</a>
+      </div>
+    </div>
+
+    <!-- Success state -->
+    <div class="success-overlay" id="successView">
+      <div class="success-check">✓</div>
+      <h2 style="font-family:var(--font-display);font-size:22px;margin-bottom:10px;">Account Created!</h2>
+      <p style="color:var(--text2);margin-bottom:28px;">Welcome to Student Helping AI. Redirecting you to the dashboard...</p>
+      <div style="width:200px;height:3px;background:var(--border2);border-radius:2px;overflow:hidden;">
+        <div id="progressBar" style="height:100%;width:0%;background:var(--grad);transition:width 2s linear;border-radius:2px;"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Theme
+  const themeToggle = document.getElementById('themeToggle');
+  const savedTheme = localStorage.getItem('sha-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  themeToggle.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+  themeToggle.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('sha-theme', next);
+    themeToggle.textContent = next === 'dark' ? '🌙' : '☀️';
+  });
+
+  // Password toggles
+  function togglePw(inputId, toggleId) {
+    const input = document.getElementById(inputId);
+    const btn = document.getElementById(toggleId);
+    let visible = false;
+    btn.addEventListener('click', () => {
+      visible = !visible;
+      input.type = visible ? 'text' : 'password';
+      btn.textContent = visible ? '🙈' : '👁️';
+    });
+  }
+  togglePw('password', 'pwToggle');
+  togglePw('confirmPassword', 'cpwToggle');
+
+  // Password strength meter
+  document.getElementById('password').addEventListener('input', function() {
+    const val = this.value;
+    const segs = ['s1','s2','s3','s4'].map(id => document.getElementById(id));
+    const label = document.getElementById('strengthLabel');
+    segs.forEach(s => { s.className = 'strength-seg'; });
+
+    if (!val) { label.textContent = 'Enter a password'; return; }
+    
+    let score = 0;
+    if (val.length >= 6)  score++;
+    if (val.length >= 10) score++;
+    if (/[A-Z]/.test(val) && /[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+
+    const labels = ['Weak', 'Fair', 'Good', 'Strong'];
+    const classes = ['weak', 'fair', 'good', 'good'];
+    for (let i = 0; i < score; i++) segs[i].classList.add(classes[score - 1]);
+    label.textContent = score > 0 ? labels[score - 1] : 'Too short';
+    label.style.color = score < 2 ? 'var(--error)' : score < 3 ? 'var(--warn)' : 'var(--success)';
+  });
+
+  // Validation helpers
+  function showError(inputId, errorId, msg) {
+    const input = document.getElementById(inputId);
+    const err = document.getElementById(errorId);
+    if (input) input.classList.add('error');
+    if (msg) err.textContent = msg;
+    err.classList.add('show');
+  }
+  function clearError(inputId, errorId) {
+    const input = document.getElementById(inputId);
+    if (input) input.classList.remove('error');
+    document.getElementById(errorId).classList.remove('show');
+  }
+  function isValidEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+
+  // Form submit
+  document.getElementById('signupForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    let valid = true;
+
+    const firstName = document.getElementById('firstName').value.trim();
+    const lastName  = document.getElementById('lastName').value.trim();
+    const email     = document.getElementById('email').value.trim();
+    const password  = document.getElementById('password').value;
+    const confirm   = document.getElementById('confirmPassword').value;
+    const terms     = document.getElementById('terms').checked;
+
+    if (!firstName) { showError('firstName','firstNameError','First name is required.'); valid = false; }
+    else clearError('firstName','firstNameError');
+
+    if (!lastName) { showError('lastName','lastNameError','Last name is required.'); valid = false; }
+    else clearError('lastName','lastNameError');
+
+    if (!email || !isValidEmail(email)) { showError('email','emailError','Enter a valid email address.'); valid = false; }
+    else clearError('email','emailError');
+
+    if (!password || password.length < 6) { showError('password','passwordError','Password must be at least 6 characters.'); valid = false; }
+    else clearError('password','passwordError');
+
+    if (!confirm || confirm !== password) { showError('confirmPassword','confirmError','Passwords do not match.'); valid = false; }
+    else clearError('confirmPassword','confirmError');
+
+    if (!terms) { document.getElementById('termsError').classList.add('show'); valid = false; }
+    else document.getElementById('termsError').classList.remove('show');
+
+    if (!valid) return;
+
+    // Check if email already exists
+    const users = JSON.parse(localStorage.getItem('sha-users') || '[]');
+    if (users.find(u => u.email === email)) {
+      showError('email','emailError','An account with this email already exists.');
+      return;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    btn.classList.add('loading');
+
+    setTimeout(() => {
+      // Save user
+      const newUser = { name: firstName + ' ' + lastName, email, password, createdAt: new Date().toISOString() };
+      users.push(newUser);
+      localStorage.setItem('sha-users', JSON.stringify(users));
+      localStorage.setItem('sha-current-user', JSON.stringify({
+        name: newUser.name, email: newUser.email, avatar: firstName[0].toUpperCase()
+      }));
+
+      // Show success
+      document.getElementById('formView').style.display = 'none';
+      const sv = document.getElementById('successView');
+      sv.classList.add('show');
+      setTimeout(() => { document.getElementById('progressBar').style.width = '100%'; }, 100);
+      setTimeout(() => { window.location.href = 'dashboard.html'; }, 2200);
+    }, 1000);
+  });
+</script>
+</body>
+</html>
