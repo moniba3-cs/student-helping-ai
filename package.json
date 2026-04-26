@@ -2,5 +2,8 @@
   "name": "student-helping-ai",
   "version": "1.0.0",
   "description": "AI-powered student helper chatbot",
-  "main": "server.js"
+  "main": "server.js",
+  "dependencies": {
+    "dotenv": "^17.4.2"
+  }
 }
